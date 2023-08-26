@@ -5,11 +5,6 @@
     <h2>
       <a href="/blogPost/{{blogPost.id}}">{{blogPost.title}}</a>
     </h2>
-    {{!-- <p>
-      <span class="dollar-amount">{{format_amount blogPost
-      .needed_funding}}</span>
-      needed!
-    </p> --}}
     <p>Created by {{blogPost
     .user.name}} on {{format_date blogPost
     .date_created}}</p>

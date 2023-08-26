@@ -27,9 +27,9 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/project/:id', async (req, res) => {
+router.get('/blogPost/:id', async (req, res) => {
   try {
-    const projectData = await Project.findByPk(req.params.id, {
+    const blogData = await BlogPost.findByPk(req.params.id, {
       include: [
         {
           model: User,
@@ -38,10 +38,10 @@ router.get('/project/:id', async (req, res) => {
       ],
     });
 
-    const project = projectData.get({ plain: true });
+    const blogPost = blogData.get({ plain: true });
 
-    res.render('project', {
-      ...project,
+    res.render('blogPost', {
+      ...blogPost,
       logged_in: req.session.logged_in,
     });
   } catch (err) {
@@ -50,17 +50,19 @@ router.get('/project/:id', async (req, res) => {
 });
 
 // Use withAuth middleware to prevent access to route
-router.get('/profile', withAuth, async (req, res) => {
+router.get('/dashboard', withAuth, async (req, res) => {
   try {
     // Find the logged in user based on the session ID
     const userData = await User.findByPk(req.session.user_id, {
       attributes: { exclude: ['password'] },
-      include: [{ model: Project }],
+      include: [{ model: BlogPost }],
     });
 
     const user = userData.get({ plain: true });
 
-    res.render('profile', {
+    console.log(user);
+
+    res.render('dashboard', {
       ...user,
       logged_in: true,
     });
@@ -72,8 +74,10 @@ router.get('/profile', withAuth, async (req, res) => {
 router.get('/login', (req, res) => {
   // If the user is already logged in, redirect the request to another route
   if (req.session.logged_in) {
-    res.redirect('/profile');
+    res.redirect('/dashboard');
     return;
+  } else {
+    console.log('Not logged in');
   }
 
   res.render('login');

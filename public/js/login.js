@@ -1,3 +1,4 @@
+// Login functionality
 const loginFormHandler = async (event) => {
   event.preventDefault();
 
@@ -14,17 +15,19 @@ const loginFormHandler = async (event) => {
     });
 
     if (response.ok) {
-      // If successful, redirect the browser to the profile page
-      document.location.replace('/profile');
+      // If successful, redirect the browser to the dashboard page
+      document.location.replace('/dashboard');
     } else {
-      alert(response.statusText);
+      alert('Incorrect email or password, please try again.');
     }
   }
 };
 
+// Sign-up functionality
 const signupFormHandler = async (event) => {
   event.preventDefault();
 
+  // Collect values from the sign-up form
   const name = document.querySelector('#name-signup').value.trim();
   const email = document.querySelector('#email-signup').value.trim();
   const password = document.querySelector('#password-signup').value.trim();
@@ -37,9 +40,12 @@ const signupFormHandler = async (event) => {
     });
 
     if (response.ok) {
-      document.location.replace('/profile');
+      // If successful, redirect the browser to the dashboard page
+      document.location.replace('/dashboard');
     } else {
-      alert(response.statusText);
+      alert(
+        'The username, email, or password is invalid, please try again. Remember, the password must be at least 8 characters, and username and email must be unique.'
+      );
     }
   }
 };
