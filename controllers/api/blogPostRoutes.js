@@ -66,19 +66,23 @@ router.delete('/:id', withAuth, async (req, res) => {
 // UPDATE (PUT) a blog post
 router.put('/update/:id', withAuth, async (req, res) => {
   try {
-    const postData = await BlogPost.update({
+    const updatedData = {
+      ...req.body,
+    };
+
+    const [affectedRows] = await BlogPost.update(updatedData, {
       where: {
         id: req.params.id,
         user_id: req.session.user_id,
       },
     });
 
-    if (!postData) {
+    if (affectedRows === 0) {
       res.status(404).json({ message: 'No blog post found with this id!' });
       return;
     }
 
-    res.status(200).json(postData);
+    res.status(200).json({ message: 'Blog post updated successfully' });
   } catch (err) {
     res.status(500).json(err);
   }

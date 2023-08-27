@@ -26,9 +26,10 @@ const newFormHandler = async (event) => {
 
 // Functionality for deleting a blog post
 const delButtonHandler = async (event) => {
+  console.log(`this is outside the if statement`);
   if (event.target.hasAttribute('data-id')) {
     const id = event.target.getAttribute('data-id');
-
+    console.log(`the id is ${id}`);
     const response = await fetch(`/api/blogPost/${id}`, {
       method: 'DELETE',
     });
@@ -41,29 +42,44 @@ const delButtonHandler = async (event) => {
   }
 };
 
-// // Functionality for updating a blog post
-// const updateButtonHandler = async (event) => {
-//   if (event.target.hasAttribute('data-id')) {
-//     const id = event.target.getAttribute('data-id');
+// Functionality for updating a blog post
+const updateButtonHandler = async (event) => {
+  event.preventDefault();
+  console.log('test');
 
-//     const response = await fetch(`/api/blogPost/${id}`, {
-//       method: 'PUT',
-//     });
+  const title = document.querySelector('#post-title').value.trim();
+  const contents = document.querySelector('#post-content').value.trim();
+  const id = document.querySelector('#post-id').value.trim();
 
-//     if (response.ok) {
-//       document.location.replace(`/blogPost/update/${id}`);
-//     } else {
-//       alert('Failed to update post');
-//     }
-//   }
-// };
+  const response = await fetch(`/api/blogPost/update/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ title, contents, id }),
+  });
 
-document
-  .querySelector('.new-project-form')
-  .addEventListener('submit', newFormHandler);
+  if (response.ok) {
+    document.location.replace('/dashboard');
+  } else {
+    alert('Failed to update post');
+  }
+};
 
-document.querySelector('#del-btn').addEventListener('click', delButtonHandler);
+if (document.querySelector('#new-blog')) {
+  document
+    .querySelector('#new-blog')
+    .addEventListener('submit', newFormHandler);
+}
 
-// document
-//   .querySelector('#update-btn')
-//   .addEventListener('click', updateButtonHandler);
+if (document.querySelector('.del-btn')) {
+  document.querySelectorAll('.del-btn').forEach((btn) => {
+    btn.addEventListener('click', delButtonHandler);
+  });
+}
+
+if (document.querySelector('#update-blog')) {
+  document
+    .querySelector('#update-blog')
+    .addEventListener('submit', updateButtonHandler);
+}
