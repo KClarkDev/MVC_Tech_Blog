@@ -24,22 +24,25 @@
     </form>
   </div>
 
-  {{!-- {{#if BlogPost.length}} --}}
+  {{#if blogPosts.length}}
   <div class="col-md-6 project-list">
-    <h3>Current Posts:</h3>
+    <h3>My Posts:</h3>
 
     {{#each blogPosts as |blogPost|}}
     <div class="row mb-2">
       <div class="col-md-8">
         <h4><a href="/blogPost/{{blogPost.id}}">{{blogPost.title}}</a></h4>
       </div>
-      <div class="col-md-4">
-        <button class="btn btn-sm btn-danger" data-id="{{blogPost.id}}">DELETE</button>
+      <div class="col-md-2">
+        <a href="/blogPost/update/{{blogPost.id}}"><button class="btn btn-sm btn-info" id="update-btn" data-id="{{blogPost.id}}">UPDATE</button></a>
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-sm btn-danger" id="del-btn" data-id="{{blogPost.id}}">DELETE</button>
       </div>
     </div>
     {{/each}}
   </div>
-  {{!-- {{/if}} --}}
+  {{/if}}
 </div>
 
 <script src="./js/dashboard.js"></script>

@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { BlogPost, User } = require('../../models');
 const withAuth = require('../../utils/auth');
 
-//
+// GET all blog posts
 router.get('/', withAuth, async (req, res) => {
   try {
     // Get all blog posts and JOIN with user data
@@ -46,6 +46,27 @@ router.post('/', withAuth, async (req, res) => {
 router.delete('/:id', withAuth, async (req, res) => {
   try {
     const postData = await BlogPost.destroy({
+      where: {
+        id: req.params.id,
+        user_id: req.session.user_id,
+      },
+    });
+
+    if (!postData) {
+      res.status(404).json({ message: 'No blog post found with this id!' });
+      return;
+    }
+
+    res.status(200).json(postData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// UPDATE (PUT) a blog post
+router.put('/update/:id', withAuth, async (req, res) => {
+  try {
+    const postData = await BlogPost.update({
       where: {
         id: req.params.id,
         user_id: req.session.user_id,
