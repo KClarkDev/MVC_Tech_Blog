@@ -11,6 +11,9 @@ router.get('/', async (req, res) => {
           model: User,
           attributes: ['name'],
         },
+        {
+          model: Comment,
+        },
       ],
     });
 
@@ -35,10 +38,15 @@ router.get('/blogPost/:id', async (req, res) => {
           model: User,
           attributes: ['name'],
         },
+        {
+          model: Comment,
+        },
       ],
     });
 
     const blogPost = blogData.get({ plain: true });
+
+    console.log(blogPost);
 
     res.render('blogPost', {
       ...blogPost,

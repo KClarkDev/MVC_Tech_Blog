@@ -2,6 +2,8 @@
 const newFormHandler = async (event) => {
   event.preventDefault();
 
+  console.log('Creating a new post...');
+
   const title = document.querySelector('#post-title').value.trim();
   const contents = document.querySelector('#post-content').value.trim();
 
@@ -66,20 +68,57 @@ const updateButtonHandler = async (event) => {
   }
 };
 
+// Functionality for adding a comment
+// uses the same variable names that are in the Comment model
+const newCommentHandler = async (event) => {
+  event.preventDefault();
+
+  const text = document.querySelector('#new-comment').value.trim();
+  const blogPostId = document.querySelector('#post-id').value.trim();
+
+  if (text) {
+    const response = await fetch(`/api/comments`, {
+      method: 'POST',
+      body: JSON.stringify({ text, blogPostId }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      document.location.replace(`/blogPost/${blogPostId}`);
+    } else {
+      const errorData = await response.json();
+      console.log('Error:', errorData);
+      alert('Failed to create post');
+    }
+  }
+};
+
+// Event listener for the Create button in the dashboard
 if (document.querySelector('#new-blog')) {
   document
     .querySelector('#new-blog')
     .addEventListener('submit', newFormHandler);
 }
 
+// Event listener for each Delete button in the dashboard by looping through all delete buttons
 if (document.querySelector('.del-btn')) {
   document.querySelectorAll('.del-btn').forEach((btn) => {
     btn.addEventListener('click', delButtonHandler);
   });
 }
 
+// Event listener for the Update button on the 'blogPostEdit' page
 if (document.querySelector('#update-blog')) {
   document
     .querySelector('#update-blog')
     .addEventListener('submit', updateButtonHandler);
+}
+
+// Event listener for the Add Comment button in the blog post page
+if (document.querySelector('#comment-form')) {
+  document
+    .querySelector('#comment-form')
+    .addEventListener('submit', newCommentHandler);
 }

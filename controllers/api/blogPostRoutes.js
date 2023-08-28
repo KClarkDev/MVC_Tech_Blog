@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { BlogPost, User } = require('../../models');
+const { BlogPost, User, Comment } = require('../../models');
 const withAuth = require('../../utils/auth');
 
 // GET all blog posts
@@ -12,8 +12,13 @@ router.get('/', withAuth, async (req, res) => {
           model: User,
           attributes: ['name'],
         },
+        {
+          model: Comment,
+        },
       ],
     });
+
+    console.log(blogData);
 
     // Serialize data so the template can read it
     const blogPosts = blogData.map((post) => post.get({ plain: true }));

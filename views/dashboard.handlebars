@@ -4,8 +4,10 @@
   </div>
 </div>
 
+
 <div class="row mt-4">
   <div class="col-md-6">
+    {{!-- Create a New Post section --}}
     <h3>Create a New Post:</h3>
 
     <form class="form new-project-form" id="new-blog">
@@ -18,12 +20,14 @@
         <label for="post-content">Body:</label>
         <textarea class="form-input" id="post-content" name="post-content"></textarea>
       </div>
+      
       <div class="form-group">
         <button type="submit" class="btn btn-primary">Create</button>
       </div>
     </form>
   </div>
 
+{{!-- My Post section --}}
   {{#if blogPosts.length}}
   <div class="col-md-6 project-list">
     <h3>My Posts:</h3>

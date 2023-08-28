@@ -15,13 +15,17 @@ Comment.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    author: {
-      type: DataTypes.STRING,
-    },
     blogPostId: {
       type: DataTypes.INTEGER,
       references: {
         model: 'blogPost',
+        key: 'id',
+      },
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'user',
         key: 'id',
       },
     },
